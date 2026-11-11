@@ -10,8 +10,12 @@ from typing import Any, Dict, List, Optional
 # Disable litellm remote cost map network fetches and telemetry for instant offline startup
 os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
 import requests
-import litellm
-litellm.telemetry = False
+
+try:
+    import litellm
+    litellm.telemetry = False
+except ImportError:
+    litellm = None
 
 from auth.context import UserContext
 from auth.keyring_service import get_user_secret
@@ -209,6 +213,11 @@ def _call_litellm(
     user_context: Optional[UserContext] = None,
 ) -> Dict[str, Any]:
     """Execute chat completion via LiteLLM using API key from user keyring."""
+    if litellm is None:
+        raise RuntimeError(
+            "LiteLLM is not installed in the active Python environment. "
+            "Please run StudyAssist using '.\\run.ps1' or activate '.venv'."
+        )
     model = profile.get("model", "gpt-4o-mini")
     api_key = None
     if user_context:

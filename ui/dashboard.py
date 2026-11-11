@@ -172,7 +172,7 @@ def create_app() -> gr.Blocks:
                 with gr.Tab("💬 Chat"):
                     with gr.Row():
                         with gr.Column(scale=8):
-                            chat_history = gr.Chatbot(label="Conversation", height=450)
+                            chat_history = gr.Chatbot(label="Conversation", height=450, value=[])
                         with gr.Column(scale=4):
                             chat_subject_sel = gr.Dropdown(label="Subject", choices=["General"], value="General", interactive=True)
                             chat_mode_radio = gr.Radio(label="Answering Mode", choices=["Quick (Single Agent)", "Jury (6 Agents Debate)"], value="Quick (Single Agent)")
@@ -294,7 +294,7 @@ def create_app() -> gr.Blocks:
         def do_login(username: str, password: str):
             success, msg, token, context = login_account(username, password)
             if not success or not context:
-                return None, None, gr.update(value=f"❌ {msg}"), gr.update(visible=True), gr.update(visible=False), "", ""
+                return None, None, gr.update(value=f"❌ {msg}"), gr.update(visible=True), gr.update(visible=False), "", "", []
             
             # Update user header and brain status
             welcome_text = f"## Welcome back, **{context.display_name or context.username}**!"
@@ -313,12 +313,13 @@ def create_app() -> gr.Blocks:
                 gr.update(visible=True),   # show dashboard
                 welcome_text,
                 badge_text,
+                [],  # fresh chat history for user session
             )
 
         login_btn.click(
             do_login,
             inputs=[login_user_in, login_pass_in],
-            outputs=[session_token_state, user_context_state, login_msg, auth_container, dashboard_container, user_header, brain_badge]
+            outputs=[session_token_state, user_context_state, login_msg, auth_container, dashboard_container, user_header, brain_badge, chat_history]
         )
 
         # Register event
@@ -361,12 +362,12 @@ def create_app() -> gr.Blocks:
         # Logout event
         def do_logout(token: Optional[str]):
             logout_account(token)
-            return None, None, gr.update(visible=True), gr.update(visible=False)
+            return None, None, gr.update(visible=True), gr.update(visible=False), []
 
         logout_btn.click(
             do_logout,
             inputs=[session_token_state],
-            outputs=[session_token_state, user_context_state, auth_container, dashboard_container]
+            outputs=[session_token_state, user_context_state, auth_container, dashboard_container, chat_history]
         )
 
         # Ingest file event

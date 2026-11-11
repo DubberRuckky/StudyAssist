@@ -54,24 +54,16 @@ StudyAssist transforms unstructured study files (PDFs, Word docs, PowerPoint pre
    ollama pull nomic-embed-text
    ```
    *(Optional fallback model for lower memory: `ollama pull qwen2.5:3b`)*
-3. **Set Up Virtual Environment & Dependencies**:
-   ```powershell
-   cd StudyAssist
-   py -3.13 -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   pip install -r requirements.txt
+3. **Run StudyAssist (Self-Repairing Quick Start)**:
+   Simply run the self-repairing launcher:
+   ```cmd
+   run.bat
    ```
-4. **Run StudyAssist**:
-   You can start the application using the convenient launcher script:
-   ```powershell
-   .\run.ps1
-   ```
-   *(Or double-click `run.bat` directly from Windows File Explorer).*
+   *(Or double-click `run.bat` directly in File Explorer, or run `.\run.ps1` in PowerShell).*
+   The launcher automatically initializes the `.venv` virtual environment if it does not exist, checks the checksum of `requirements.txt` to install/update dependencies, and launches the app.
 
-   Alternatively, launch with the virtual environment Python directly:
-   ```powershell
-   .\.venv\Scripts\python.exe app.py
-   ```
+   *(Manual alternative: `py -3.13 -m venv .venv && .\.venv\Scripts\Activate.ps1 && pip install -r requirements.txt && python app.py`)*
+
    Open your browser and navigate to `http://127.0.0.1:7860`.
 
 ### macOS & Linux Setup
@@ -279,6 +271,8 @@ All tests use `MockBrain` and execute fully offline without requiring an active 
 
 | Symptom | Likely Cause | Fix |
 | :--- | :--- | :--- |
+| **ModuleNotFoundError (e.g. `requests`)** | App launched using system Python instead of `.venv`, or dependencies not installed | Launch via `run.bat` (or `run.ps1`) to automatically create `.venv` and install dependencies, or run `.\.venv\Scripts\python.exe -m pip install -r requirements.txt` |
+| **`chromadb` dependency conflict (`onnxruntime`)** | Python 3.14+ used instead of Python 3.13 (no precompiled onnxruntime wheels for 3.14+) | Install Python 3.13 from python.org, delete `.venv`, and re-run `run.bat` |
 | **Ollama not running** | Ollama service is closed | Launch Ollama from Start Menu or run `ollama serve` |
 | **Model not loaded** | Model was not pulled | Run `ollama pull qwen2.5:7b` in terminal |
 | **GPU not used on AMD** | Vulkan environment variable missing | Set `OLLAMA_VULKAN=1` in Windows environment variables and restart Ollama |

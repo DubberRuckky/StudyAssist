@@ -2,6 +2,15 @@
 
 All notable changes to the StudyAssist project will be documented in this file.
 
+## [Unreleased] - Launcher Self-Repair, Dependency Audit, and Startup Diagnostics
+- Pinned `requirements.txt` to the fully tested, verified working dependency set including `onnxruntime==1.31.1`, `chromadb==1.5.9`, `requests==2.34.2`, and all compatible runtime packages.
+- Made `run.bat` and `run.ps1` self-repairing: automatically creates `.venv` via `py -3.13` (falling back to `python -m venv`), computes SHA256 checksum of `requirements.txt` to install/update dependencies only when changed, and removed silent fallback to system python.
+- Audited all third-party dependencies across all project modules, confirming `requests>=2.31.0` and mapping aliased packages (`pymupdf`/`fitz`, `python-docx`/`docx`, `python-pptx`/`pptx`, `Pillow`/`PIL`, `argon2-cffi`/`argon2`).
+- Added preflight dependency check at startup in `app.py` before heavy imports, printing a single clear diagnostic message with missing packages, active interpreter path, and exact install command, cleanly exiting without tracebacks.
+- Added automated tests in `tests/test_dependencies.py`: one verifying that every project module can be imported cleanly, and one verifying that all third-party imports are declared in `requirements.txt`.
+- Fixed syntax error in `ui/auth_view.py` to ensure all modules import cleanly.
+- Updated `README.md` Quick Start to use `run.bat` as primary launcher and added a troubleshooting entry for `ModuleNotFoundError`.
+
 ## [Milestone 11] - Colab Server Notebook, Full Documentation Pass, and Automated Docs & Smoke Tests
 - Created `colab/brain_server.ipynb` and `colab/README.md` implementing an authenticated reverse proxy server for Ollama with Qwen 2.5 7B, complete with Google Colab Terms of Service warnings, bearer-token security, and Cloudflare tunnel instructions.
 - Validated and audited full `README.md` ensuring all 14 mandatory sections, 6 agent tools, Argon2id security, recovery key recovery, local storage architecture, Vulkan setup (`OLLAMA_VULKAN=1`), and single-computer no-sync limitation are thoroughly documented.

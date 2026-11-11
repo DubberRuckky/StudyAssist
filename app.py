@@ -17,6 +17,59 @@ if __name__ == "__main__":
 # Ensure project root is in sys.path
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
+# Startup dependency check before heavy imports
+_REQUIRED_PACKAGES = [
+    ("requests", "requests"),
+    ("pydantic", "pydantic"),
+    ("argon2", "argon2-cffi"),
+    ("cryptography", "cryptography"),
+    ("keyring", "keyring"),
+    ("psutil", "psutil"),
+    ("litellm", "litellm"),
+    ("chromadb", "chromadb"),
+    ("pymupdf", "pymupdf"),
+    ("docx", "python-docx"),
+    ("pptx", "python-pptx"),
+    ("openpyxl", "openpyxl"),
+    ("pytesseract", "pytesseract"),
+    ("PIL", "Pillow"),
+    ("gradio", "gradio"),
+]
+
+
+def _check_startup_dependencies() -> None:
+    """Verify that all required packages can be imported before heavy imports."""
+    import importlib
+
+    missing = []
+    for mod_name, pkg_name in _REQUIRED_PACKAGES:
+        try:
+            if mod_name == "pymupdf":
+                try:
+                    importlib.import_module("pymupdf")
+                except ImportError:
+                    importlib.import_module("fitz")
+            else:
+                importlib.import_module(mod_name)
+        except ImportError:
+            if pkg_name not in missing:
+                missing.append(pkg_name)
+
+    if missing:
+        install_cmd = f'"{sys.executable}" -m pip install -r requirements.txt'
+        print("=" * 65, file=sys.stderr)
+        print("[StudyAssist] ERROR: Missing required dependencies!", file=sys.stderr)
+        print("The following required packages could not be imported:", file=sys.stderr)
+        for pkg in missing:
+            print(f"  - {pkg}", file=sys.stderr)
+        print(f"\nInterpreter in use:\n  {sys.executable}", file=sys.stderr)
+        print(f"\nTo install the missing dependencies, run:\n  {install_cmd}", file=sys.stderr)
+        print("=" * 65, file=sys.stderr)
+        sys.exit(1)
+
+
+_check_startup_dependencies()
+
 # Import all tool modules to register them in agent dispatcher
 import tools.ingest_material  # noqa: F401
 import tools.search_notes     # noqa: F401

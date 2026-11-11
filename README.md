@@ -50,7 +50,7 @@ StudyAssist transforms unstructured study files (PDFs, Word docs, PowerPoint pre
 2. **Install Ollama & Pull Models**:
    Download Ollama from [ollama.com](https://ollama.com). Open PowerShell and pull the chat and embedding models:
    ```powershell
-   ollama pull qwen2.5:7b
+   ollama pull qwen2.5-coder:7b
    ollama pull nomic-embed-text
    ```
    *(Optional fallback model for lower memory: `ollama pull qwen2.5:3b`)*

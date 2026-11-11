@@ -1,0 +1,45 @@
+{
+  "embeddings": {
+    "model": "nomic-embed-text",
+    "run_on_cpu": true,
+    "ollama_url": "http://localhost:11434"
+  },
+  "hardware": {
+    "default_context_length": 2048,
+    "keep_alive": "5m",
+    "default_mode": "quick",
+    "recommend_vulkan_on_windows": true
+  },
+  "safety": {
+    "requires_confirmation": [
+      "schedule_revision"
+    ],
+    "daily_call_cap": 100
+  },
+  "auth": {
+    "argon2_time_cost": 3,
+    "argon2_memory_cost_kib": 65536,
+    "argon2_parallelism": 4,
+    "session_timeout_minutes": 60,
+    "max_failed_logins": 5,
+    "lockout_seconds": 300
+  },
+  "jury": {
+    "roles": [
+      "explainer",
+      "rigorous_expert",
+      "skeptic",
+      "exam_coach",
+      "example_builder",
+      "fact_checker"
+    ],
+    "weights": {
+      "explainer": 1.0,
+      "rigorous_expert": 1.2,
+      "skeptic": 1.1,
+      "exam_coach": 1.3,
+      "example_builder": 1.0,
+      "fact_checker": 1.4
+    }
+  }
+}

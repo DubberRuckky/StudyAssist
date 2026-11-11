@@ -1,0 +1,72 @@
+{
+  "active_profile": "local_ollama",
+  "fallback_order": [
+    "local_ollama",
+    "local_fallback",
+    "colab_ollama"
+  ],
+  "profiles": {
+    "local_ollama": {
+      "provider_type": "ollama",
+      "model": "qwen2.5-coder:7b",
+      "base_url": "http://localhost:11434",
+      "is_local": true,
+      "native_tools": false,
+      "max_parallel_calls": 1,
+      "context_length": 4096,
+      "timeout_seconds": 60,
+      "description": "Default local Ollama brain running Qwen 2.5 7B"
+    },
+    "local_fallback": {
+      "provider_type": "ollama",
+      "model": "qwen2.5:3b",
+      "base_url": "http://localhost:11434",
+      "is_local": true,
+      "native_tools": false,
+      "max_parallel_calls": 1,
+      "context_length": 2048,
+      "timeout_seconds": 45,
+      "description": "Lightweight fallback local brain for slow or constrained systems"
+    },
+    "colab_ollama": {
+      "provider_type": "colab_tunnel",
+      "model": "qwen2.5:7b",
+      "base_url": "http://localhost:11434",
+      "is_local": false,
+      "native_tools": false,
+      "max_parallel_calls": 2,
+      "context_length": 8192,
+      "timeout_seconds": 90,
+      "description": "Experimental remote Ollama server hosted on Google Colab via tunnel"
+    },
+    "remote_cloud": {
+      "provider_type": "litellm",
+      "model": "gpt-4o-mini",
+      "base_url": null,
+      "is_local": false,
+      "native_tools": true,
+      "max_parallel_calls": 4,
+      "context_length": 16384,
+      "timeout_seconds": 60,
+      "description": "Cloud LLM (OpenAI, Anthropic Claude, Google Gemini) via LiteLLM"
+    },
+    "mock": {
+      "provider_type": "mock",
+      "model": "mock-brain-v1",
+      "base_url": null,
+      "is_local": true,
+      "native_tools": true,
+      "max_parallel_calls": 4,
+      "context_length": 4096,
+      "timeout_seconds": 10,
+      "description": "Scripted MockBrain for automated testing and offline verification"
+    },
+    "broken_profile": {
+      "provider_type": "ollama",
+      "model": "non-existent-model",
+      "base_url": "http://127.0.0.1:9999",
+      "timeout_seconds": 1,
+      "is_local": true
+    }
+  }
+}

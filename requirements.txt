@@ -1,0 +1,28 @@
+# StudyAssist Requirements
+# Core & Data Models
+pydantic>=2.0.0
+argon2-cffi>=23.1.0
+cryptography>=42.0.0
+keyring>=24.0.0
+psutil>=5.9.0
+requests>=2.31.0
+
+# LLM & Embedding Brain
+litellm>=1.40.0
+
+# Vector Database & Storage
+chromadb>=0.5.0
+
+# Document Ingestion & OCR
+pymupdf>=1.24.0
+python-docx>=1.1.0
+python-pptx>=0.6.23
+openpyxl>=3.1.0
+pytesseract>=0.3.10
+Pillow>=10.0.0
+
+# User Interface
+gradio>=4.30.0
+
+# Testing
+pytest>=8.0.0

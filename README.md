@@ -41,36 +41,57 @@ StudyAssist transforms unstructured study files (PDFs, Word docs, PowerPoint pre
 
 ## 2. Quick Start
 
-### Windows Setup
-1. **Install Python 3.13**:
-   Download Python 3.13 from [python.org](https://www.python.org/) or install via winget:
-   ```powershell
-   winget install --id Python.Python.3.13
-   ```
-2. **Install Ollama & Pull Models**:
-   Download Ollama from [ollama.com](https://ollama.com). Open PowerShell and pull the chat and embedding models:
-   ```powershell
-   ollama pull qwen2.5-coder:7b
-   ollama pull nomic-embed-text
-   ```
-   *(Optional fallback model for lower memory: `ollama pull qwen2.5:3b`)*
-3. **Run StudyAssist (Self-Repairing Quick Start)**:
-   Simply run the self-repairing launcher:
-   ```cmd
-   run.bat
-   ```
-   *(Or double-click `run.bat` directly in File Explorer, or run `.\run.ps1` in PowerShell).*
-   The launcher automatically initializes the `.venv` virtual environment if it does not exist, checks the checksum of `requirements.txt` to install/update dependencies, and launches the app.
+### 1. Install Ollama
+Install Ollama for your operating system:
 
-   *(Manual alternative: `py -3.13 -m venv .venv && .\.venv\Scripts\Activate.ps1 && pip install -r requirements.txt && python app.py`)*
+- **Windows**:
+  Install via winget in PowerShell or download the installer from [ollama.com](https://ollama.com):
+  ```powershell
+  winget install Ollama.Ollama
+  ```
+- **macOS**:
+  Install via Homebrew or download from [ollama.com](https://ollama.com):
+  ```bash
+  brew install ollama
+  ```
+- **Linux**:
+  Install via the official install script:
+  ```bash
+  curl -fsSL https://ollama.com/install.sh | sh
+  ```
 
-   Open your browser and navigate to `http://127.0.0.1:7860`.
+### 2. Pull Required Models
+Open terminal or PowerShell and pull the local chat model (`qwen2.5:7b`) and embedding model (`nomic-embed-text`):
+```bash
+ollama pull qwen2.5:7b
+ollama pull nomic-embed-text
+```
+*(Optional fallback model for lower memory: `ollama pull qwen2.5:3b`)*
 
-### macOS & Linux Setup
-1. Install Python 3.13 and Ollama.
-2. Pull `qwen2.5:7b` and `nomic-embed-text`.
-3. Create a virtual environment (`python3.13 -m venv .venv && source .venv/bin/activate`).
-4. Run `pip install -r requirements.txt` and launch with `python app.py`.
+### 3. Run StudyAssist
+On Windows, simply run the self-repairing launcher:
+```cmd
+run.bat
+```
+*(Or double-click `run.bat` directly in Windows File Explorer, or run `.\run.ps1` in PowerShell).*
+
+The launcher automatically:
+- Creates the `.venv` virtual environment if missing (via `py -3.13 -m venv .venv`, falling back to `python -m venv`).
+- Verifies the SHA256 checksum of `requirements.txt` and automatically installs dependencies into `.venv`.
+- Launches the application bound strictly to `http://127.0.0.1:7860`.
+
+*(Manual setup alternative: `py -3.13 -m venv .venv && .\.venv\Scripts\Activate.ps1 && pip install -r requirements.txt && python app.py`)*
+
+#### macOS & Linux Launch:
+1. Ensure Python 3.13 and Ollama are installed and models are pulled.
+2. Create a virtual environment and start:
+   ```bash
+   python3.13 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   python app.py
+   ```
+   Open your browser at `http://127.0.0.1:7860`.
 
 ---
 
